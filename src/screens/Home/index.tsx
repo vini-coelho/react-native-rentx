@@ -1,6 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { StatusBar, FlatList } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import Logo from '../../assets/logo.svg';
