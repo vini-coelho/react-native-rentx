@@ -13,7 +13,7 @@ interface Props extends RectButtonProps {
 
 export function Button({ title, color, ...rest }: Props) {
   return (
-    <Container {...rest} onPress={() => {}}>
+    <Container {...rest}>
       <Title>{title}</Title>
     </Container>
   );
