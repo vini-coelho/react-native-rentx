@@ -6,6 +6,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { api } from '../../services/api';
 
 import { Car } from '../../components/Car';
+import { CarDTO } from '../../dtos/carDTO';
 
 import Logo from '../../assets/logo.svg';
 
@@ -15,28 +16,29 @@ import {
   HeaderContent,
   TotalCars
 } from './styles';
+import { Loading } from '../../components/Loading';
 
 export function Home() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<CarDTO[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
-
-
 
   useEffect(() => {
     async function fetchCars() {
       try {
         const response = await api.get('/cars');
-        console.log(response.data)
         setData(response.data);
       } catch(err) {
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCars();
   }, []);
 
-  function handleCarDetails() {
-    navigation.navigate('CarDetails');
+  function handleCarDetails(car: CarDTO) {
+    navigation.navigate('CarDetails', { car });
   }
 
   return (
@@ -56,17 +58,23 @@ export function Home() {
           </HeaderContent>
         </Header>
 
-        <FlatList
-          data={data}
-          contentContainerStyle={{ padding: 16 }}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => (
-            <Car
-              data={item}
-              onPress={handleCarDetails}
-            />
-          )}
-        />
+        {
+          isLoading ?
+          <Loading />
+          :
+          <FlatList
+            data={data}
+            contentContainerStyle={{ padding: 16 }}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <Car
+                data={item}
+                onPress={() => handleCarDetails(item)}
+              />
+            )}
+          />
+        }
 
     </Container>
   );
