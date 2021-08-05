@@ -31,15 +31,23 @@ interface Params {
 }
 
 export function CarDetails() {
-  const { goBack } = useNavigation();
+  const navigation = useNavigation();
   const route = useRoute();
 
   const { car } = route.params as Params;
 
+  function handleConfirmScheduling() {
+    navigation.navigate('Scheduling');
+  }
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
   return (
     <Container>
       <Header>
-        <BackButton onPress={() => goBack()} />
+        <BackButton onPress={handleGoBack} />
       </Header>
       <CarImages>
         <ImageSlider
@@ -78,6 +86,7 @@ export function CarDetails() {
       <Footer>
         <Button
           title='Confirmar'
+          onPress={handleConfirmScheduling}
         />
       </Footer>
     </Container>
