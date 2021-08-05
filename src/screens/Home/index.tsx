@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar, FlatList } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-import Logo from '../../assets/logo.svg';
+import { api } from '../../services/api';
 
 import { Car } from '../../components/Car';
+
+import Logo from '../../assets/logo.svg';
 
 import {
   Container,
@@ -14,35 +17,27 @@ import {
 } from './styles';
 
 export function Home() {
-  const carData = [
-    {
-      brand: 'Audi',
-      name: 'RS 5 Coupé',
-      rent: {
-        period: 'Ao dia',
-        price: '120'
-      },
-      thumbnail: 'https://img2.gratispng.com/20180628/bea/kisspng-audi-rs5-car-audi-q5-audi-s5-motor-sport-5b359e505de2b8.8061450915302405923846.jpg'
-    },
-    {
-      brand: 'Porsche',
-      name: 'Panamera',
-      rent: {
-        period: 'Ao dia',
-        price: '340'
-      },
-      thumbnail: 'https://img2.gratispng.com/20180628/bea/kisspng-audi-rs5-car-audi-q5-audi-s5-motor-sport-5b359e505de2b8.8061450915302405923846.jpg'
-    },
-    {
-      brand: 'Porsche',
-      name: 'Panamera',
-      rent: {
-        period: 'Ao dia',
-        price: '340'
-      },
-      thumbnail: 'https://img2.gratispng.com/20180628/bea/kisspng-audi-rs5-car-audi-q5-audi-s5-motor-sport-5b359e505de2b8.8061450915302405923846.jpg'
-    }
-  ]
+  const [data, setData] = useState([]);
+  const navigation = useNavigation();
+
+
+
+  useEffect(() => {
+    async function fetchCars() {
+      try {
+        const response = await api.get('/cars');
+        console.log(response.data)
+        setData(response.data);
+      } catch(err) {
+        console.log(err);
+      }
+    };
+    fetchCars();
+  }, []);
+
+  function handleCarDetails() {
+    navigation.navigate('CarDetails');
+  }
 
   return (
     <Container>
@@ -62,12 +57,13 @@ export function Home() {
         </Header>
 
         <FlatList
-          data={carData}
+          data={data}
           contentContainerStyle={{ padding: 16 }}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
             <Car
               data={item}
+              onPress={handleCarDetails}
             />
           )}
         />
