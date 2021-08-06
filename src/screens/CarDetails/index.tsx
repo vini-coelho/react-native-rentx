@@ -26,18 +26,18 @@ import {
 } from './styles';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
-interface Params {
-  car: CarDTO
+interface RouteParams {
+  car: CarDTO;
 }
 
 export function CarDetails() {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const { car } = route.params as Params;
+  const { car } = route.params as RouteParams;
 
   function handleConfirmScheduling() {
-    navigation.navigate('Scheduling');
+    navigation.navigate('Scheduling', { car });
   }
 
   function handleGoBack() {

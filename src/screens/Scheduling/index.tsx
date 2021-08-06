@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { format } from 'date-fns';
+
+import { getPlatfromDate } from '../../utils/getPlatformDate';
+import { CarDTO } from '../../dtos/carDTO';
 
 import { BackButton } from '../../components/BackButton';
 import { Button } from '../../components/Button';
@@ -26,7 +29,6 @@ import {
   Content,
   Footer
 } from './styles';
-import { getPlatfromDate } from '../../utils/getPlatformDate';
 
 interface RentalPeriod {
   start: number;
@@ -35,16 +37,23 @@ interface RentalPeriod {
   endFormatted: string;
 }
 
+interface RouteParams {
+  car: CarDTO;
+}
+
 export function Scheduling() {
   const theme = useTheme();
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const { car } = route.params as RouteParams;
 
   const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps);
   const [markedDates, setMarkedDates] = useState<MarkedDateProps>({} as MarkedDateProps);
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod);
 
   function handleConfirmRental() {
-    navigation.navigate('SchedulingDetails');
+    navigation.navigate('SchedulingDetails', { car });
   }
 
   function handleGoBack() {
