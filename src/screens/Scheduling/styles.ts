@@ -40,8 +40,13 @@ export const RentPeriod = styled.View`
   margin-top: 32px;
 `;
 
-export const DateInfo = styled.View`
+export const DateInfo = styled.View<DateValueProps>`
   width: 30%;
+  ${({ selected, theme }) => !selected && css`
+    border-bottom-width: 1px;
+    border-bottom-color: ${theme.colors.text};
+    padding-bottom: 5px;
+  `};
 `;
 
 export const DateTitle = styled.Text`
@@ -50,16 +55,12 @@ export const DateTitle = styled.Text`
   font-size: ${RFValue(10)}px;
 `;
 
-export const DateValue = styled.Text<DateValueProps>`
+export const DateValue = styled.Text`
   color: ${({ theme }) => theme.colors.shape};
   font-family: ${({ theme }) => theme.fonts.primary_500};
   font-size: ${RFValue(15)}px;
 
-  ${({ selected, theme }) => !selected && css`
-    border-bottom-width: 1px;
-    border-bottom-color: ${({ theme }) => theme.colors.text};
-    padding-bottom: 5px;
-  `};
+
 `;
 
 export const Content = styled.ScrollView.attrs({
