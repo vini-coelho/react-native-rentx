@@ -51,7 +51,7 @@ export function SchedulingDetails() {
   const { car } = route.params as RouteParams;
 
   function handleConfirmScheduling() {
-    navigation.navigate('Scheduling');
+    navigation.navigate('SchedulingComplete');
   }
 
   function handleGoBack() {
